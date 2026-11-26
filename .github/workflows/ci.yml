@@ -24,7 +24,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       - name: Shared module tests (JVM + Android unit)
         run: ./gradlew :shared:desktopTest :shared:testDebugUnitTest --stacktrace
@@ -90,7 +90,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       - name: Select Xcode 16 (the newest Kotlin 2.1 supports)
         run: |
           XCODE=$(ls -d /Applications/Xcode_16*.app | sort -V | tail -n 1)
