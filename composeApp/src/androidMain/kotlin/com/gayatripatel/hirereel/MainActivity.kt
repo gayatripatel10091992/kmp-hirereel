@@ -23,8 +23,10 @@ class MainActivity : ComponentActivity() {
         val debuggable = applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         val scene = if (debuggable) DemoScenes.named(intent.getStringExtra("scene")) else null
         if (scene != null) {
-            val bars = if (scene.darkBars) SystemBarStyle.dark(Color.TRANSPARENT) else SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
-            enableEdgeToEdge(statusBarStyle = bars, navigationBarStyle = bars)
+            val light = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+            val dark = SystemBarStyle.dark(Color.TRANSPARENT)
+            // Status bar over the screen's top; navigation bar over its (light) bottom sheet unless the whole theme is dark.
+            enableEdgeToEdge(statusBarStyle = if (scene.darkBars) dark else light, navigationBarStyle = if (scene.dark) dark else light)
             setContent { DemoScene(scene) }
             return
         }
