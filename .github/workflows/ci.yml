@@ -38,7 +38,7 @@ jobs:
           mkdir -p docs/screenshots/desktop
           cp composeApp/build/screenshots/desktop/*.png docs/screenshots/desktop/
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: hirereel-android-apk
           path: composeApp/build/outputs/apk/debug/*.apk
@@ -72,7 +72,7 @@ jobs:
           profile: pixel_6
           disable-animations: true
           script: bash .github/scripts/capture-android.sh "$(ls apk/*.apk | head -n 1)"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: hirereel-android-screenshots
           path: docs/screenshots/android/*.png
@@ -115,7 +115,7 @@ jobs:
       - name: Run on the simulator and capture screenshots
         run: bash .github/scripts/capture-ios.sh iosApp/build/Build/Products/Debug-iphonesimulator/iosApp.app
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: hirereel-ios-screenshots
