@@ -82,7 +82,8 @@ jobs:
 
   ios:
     name: iOS shared tests, app build, simulator screenshots
-    runs-on: macos-15
+    # Intel runner: hosted macOS arm64 capacity has been too short to pick these jobs up.
+    runs-on: macos-15-intel
     timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
@@ -98,7 +99,7 @@ jobs:
           xcodebuild -version
 
       - name: Shared tests on the iOS simulator
-        run: ./gradlew :shared:iosSimulatorArm64Test --stacktrace
+        run: ./gradlew :shared:iosX64Test --stacktrace
 
       - name: Generate the Xcode project
         run: |
@@ -108,7 +109,7 @@ jobs:
       - name: Build the iOS app for the simulator
         run: >
           xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug
-          -sdk iphonesimulator -destination "generic/platform=iOS Simulator" ARCHS=arm64
+          -sdk iphonesimulator -destination "generic/platform=iOS Simulator" ARCHS=x86_64
           -derivedDataPath iosApp/build CODE_SIGNING_ALLOWED=NO build
 
       - name: Run on the simulator and capture screenshots
