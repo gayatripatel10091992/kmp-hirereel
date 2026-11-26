@@ -22,11 +22,11 @@ Video and camera surfaces are platform views, so the poster frames show instead.
 
 | Sign in | Video feed | Search | Filters (dark) | Job detail |
 |---|---|---|---|---|
-| ![Login](docs/screenshots/01_login.png) | ![Feed](docs/screenshots/02_feed.png) | ![Jobs](docs/screenshots/03_jobs.png) | ![Filtered](docs/screenshots/04_jobs_filtered_dark.png) | ![Detail](docs/screenshots/05_job_detail.png) |
+| ![Login](docs/screenshots/desktop/01_login.png) | ![Feed](docs/screenshots/desktop/02_feed.png) | ![Jobs](docs/screenshots/desktop/03_jobs.png) | ![Filtered](docs/screenshots/desktop/04_jobs_filtered_dark.png) | ![Detail](docs/screenshots/desktop/05_job_detail.png) |
 
 | Interview: ready | Recording | Review & retake | All answers | Uploads |
 |---|---|---|---|---|
-| ![Ready](docs/screenshots/06_interview_ready.png) | ![Recording](docs/screenshots/07_interview_recording.png) | ![Review](docs/screenshots/08_interview_review.png) | ![Finished](docs/screenshots/09_interview_finished.png) | ![Applications](docs/screenshots/10_applications.png) |
+| ![Ready](docs/screenshots/desktop/06_interview_ready.png) | ![Recording](docs/screenshots/desktop/07_interview_recording.png) | ![Review](docs/screenshots/desktop/08_interview_review.png) | ![Finished](docs/screenshots/desktop/09_interview_finished.png) | ![Applications](docs/screenshots/desktop/10_applications.png) |
 
 ## What's shared and what's native
 

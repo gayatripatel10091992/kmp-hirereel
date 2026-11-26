@@ -1,0 +1,10 @@
+01_login
+02_feed
+03_jobs
+04_jobs_filtered_dark
+05_job_detail
+06_interview_ready
+07_interview_recording
+08_interview_review
+09_interview_finished
+10_applications
