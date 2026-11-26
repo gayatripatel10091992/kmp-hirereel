@@ -27,11 +27,20 @@ xcrun simctl boot "$DEVICE" || true
 xcrun simctl bootstatus "$DEVICE" -b
 xcrun simctl status_bar "$DEVICE" override --time "9:41" --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4
 xcrun simctl install "$DEVICE" "$APP"
-xcrun simctl launch "$DEVICE" "$APP_ID" >/dev/null
+xcrun simctl launch "$DEVICE" "$APP_ID"
 sleep 20   # first launch on a fresh simulator is slow
 xcrun simctl terminate "$DEVICE" "$APP_ID" || true
 
-running() { xcrun simctl spawn "$DEVICE" launchctl list | grep -q "UIKitApplication:$APP_ID"; }
+# Simulator apps are host processes, so the pid from `simctl launch` can be checked with ps.
+diagnose() {
+  echo "--- crash reports"
+  ls -t ~/Library/Logs/DiagnosticReports/ 2>/dev/null | head -5
+  latest=$(ls -t ~/Library/Logs/DiagnosticReports/*iosApp* 2>/dev/null | head -n 1 || true)
+  [ -n "$latest" ] && head -c 6000 "$latest"
+  echo "--- app log"
+  xcrun simctl spawn "$DEVICE" log show --last 2m --style compact --predicate 'process == "iosApp"' 2>/dev/null | tail -60 || true
+  mkdir -p debug && xcrun simctl io "$DEVICE" screenshot debug/failure.png >/dev/null || true
+}
 
 # A for loop, not `while read`: adb and simctl would swallow the list from stdin.
 for scene in $(cat .github/scripts/scenes.txt); do
@@ -39,10 +48,12 @@ for scene in $(cat .github/scripts/scenes.txt); do
   case "$scene" in *dark*|*interview*) xcrun simctl ui "$DEVICE" appearance dark ;; *) xcrun simctl ui "$DEVICE" appearance light ;; esac
   xcrun simctl terminate "$DEVICE" "$APP_ID" 2>/dev/null || true
   sleep 1
-  xcrun simctl launch "$DEVICE" "$APP_ID" -scene "$scene" >/dev/null
-  sleep 5
-  if ! running; then
-    echo "::error::HireReel is not running for $scene; refusing to save it"
+  out=$(xcrun simctl launch "$DEVICE" "$APP_ID" -scene "$scene")
+  pid=${out##*: }
+  sleep 6
+  if ! ps -p "$pid" >/dev/null 2>&1; then
+    echo "::error::HireReel ($out) is not running for $scene; refusing to save it"
+    diagnose
     exit 1
   fi
   xcrun simctl io "$DEVICE" screenshot "$OUT/$scene.png" >/dev/null

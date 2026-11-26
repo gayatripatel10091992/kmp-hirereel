@@ -116,9 +116,12 @@ jobs:
         run: bash .github/scripts/capture-ios.sh iosApp/build/Build/Products/Debug-iphonesimulator/iosApp.app
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: hirereel-ios-screenshots
-          path: docs/screenshots/ios/*.png
+          path: |
+            docs/screenshots/ios/*.png
+            debug/*.png
       - name: Commit updated screenshots
         if: github.event_name != 'pull_request'
         run: bash .github/scripts/commit-screenshots.sh docs/screenshots/ios "iOS"
