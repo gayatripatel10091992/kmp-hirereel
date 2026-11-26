@@ -1,5 +1,6 @@
 package com.gayatripatel.hirereel.ui
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -161,7 +162,7 @@ fun JobDetailScreen(job: Job, onBack: () -> Unit, onStartInterview: () -> Unit, 
         bottomBar = {
             Button(
                 onClick = onStartInterview,
-                modifier = Modifier.fillMaxWidth().padding(16.dp).height(52.dp),
+                modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(16.dp).height(52.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
             ) {
                 Icon(Icons.Filled.Videocam, null)

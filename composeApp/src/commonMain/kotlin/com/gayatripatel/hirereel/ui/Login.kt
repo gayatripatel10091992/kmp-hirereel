@@ -1,5 +1,10 @@
 package com.gayatripatel.hirereel.ui
 
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -62,7 +66,7 @@ fun LoginScreen(
     Column(
         Modifier.fillMaxSize()
             .background(Brush.verticalGradient(listOf(MaterialTheme.colorScheme.primary, Color(0xFF7C3AED), MaterialTheme.colorScheme.secondary)))
-            .safeDrawingPadding(),
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)),
     ) {
         Column(Modifier.weight(1f).fillMaxWidth().padding(28.dp), verticalArrangement = Arrangement.Center) {
             Box(
@@ -77,8 +81,9 @@ fun LoginScreen(
                 style = MaterialTheme.typography.titleMedium,
             )
         }
+        // The sheet runs under the navigation bar; its content stays above it (and above the keyboard).
         Surface(shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp), modifier = Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(24.dp)) {
+            Column(Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)).padding(24.dp)) {
                 Text(if (state.codeSent) "Enter the code" else "Sign in with your phone", style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.height(16.dp))
                 if (!state.codeSent) {

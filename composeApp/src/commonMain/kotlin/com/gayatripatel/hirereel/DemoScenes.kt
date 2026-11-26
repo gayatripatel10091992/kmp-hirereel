@@ -29,7 +29,14 @@ import com.gayatripatel.hirereel.ui.applicationRows
  * launched with one (`--es scene 03_jobs` on Android, `-scene 03_jobs` on iOS). Nothing here touches the network.
  */
 object DemoScenes {
-    class Scene(val name: String, val tab: Tab? = null, val dark: Boolean = false, val content: @Composable () -> Unit)
+    /** [darkBars]: light status-bar icons, for dark themes and for screens drawn over a dark camera view. */
+    class Scene(
+        val name: String,
+        val tab: Tab? = null,
+        val dark: Boolean = false,
+        val darkBars: Boolean = dark,
+        val content: @Composable () -> Unit,
+    )
 
     private val now = SampleJobs.FIXED_NOW
     private val jobs = SampleJobs.jobs(now)
@@ -64,7 +71,7 @@ object DemoScenes {
 
     fun named(name: String?): Scene? = all.firstOrNull { it.name == name }
 
-    private fun interview(name: String, state: InterviewState) = Scene(name) {
+    private fun interview(name: String, state: InterviewState) = Scene(name, darkBars = true) {
         InterviewScreen(job, state, "Question ${state.questionIndex + 1} of ${job.questions.size}", null, camera = {}, {}, {}, {}, {}, {}, {})
     }
 }

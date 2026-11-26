@@ -36,7 +36,7 @@ running() { xcrun simctl spawn "$DEVICE" launchctl list | grep -q "UIKitApplicat
 # A for loop, not `while read`: adb and simctl would swallow the list from stdin.
 for scene in $(cat .github/scripts/scenes.txt); do
   # Status bar text follows the system appearance, so match it to the scene.
-  case "$scene" in *dark*) xcrun simctl ui "$DEVICE" appearance dark ;; *) xcrun simctl ui "$DEVICE" appearance light ;; esac
+  case "$scene" in *dark*|*interview*) xcrun simctl ui "$DEVICE" appearance dark ;; *) xcrun simctl ui "$DEVICE" appearance light ;; esac
   xcrun simctl terminate "$DEVICE" "$APP_ID" 2>/dev/null || true
   sleep 1
   xcrun simctl launch "$DEVICE" "$APP_ID" -scene "$scene" >/dev/null
