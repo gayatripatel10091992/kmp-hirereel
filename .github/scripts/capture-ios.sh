@@ -3,6 +3,8 @@
 # Fails if the app is not running, so a home-screen screenshot is never committed.
 set -euo pipefail
 
+python3 -c "import PIL" 2>/dev/null || python3 -m pip install --quiet --break-system-packages pillow
+
 APP_ID="com.gayatripatel.hirereel.kmp"
 APP="$1"
 OUT="docs/screenshots/ios"
@@ -31,6 +33,8 @@ xcrun simctl launch "$DEVICE" "$APP_ID"
 sleep 20   # first launch on a fresh simulator is slow
 xcrun simctl terminate "$DEVICE" "$APP_ID" || true
 
+# Waits for the app to draw and settle (see settle.py), then saves the screenshot.
+settled_screenshot() { python3 .github/scripts/settle.py "$DEVICE" "$1"; }
 # Simulator apps are host processes, so the pid from `simctl launch` can be checked with ps.
 diagnose() {
   echo "--- crash reports"
@@ -50,13 +54,11 @@ for scene in $(cat .github/scripts/scenes.txt); do
   sleep 1
   out=$(xcrun simctl launch "$DEVICE" "$APP_ID" -scene "$scene")
   pid=${out##*: }
-  sleep 6
-  if ! ps -p "$pid" >/dev/null 2>&1; then
-    echo "::error::HireReel ($out) is not running for $scene; refusing to save it"
+  if ! settled_screenshot "$OUT/$scene.png" || ! ps -p "$pid" >/dev/null 2>&1; then
+    echo "::error::HireReel ($out) did not settle on $scene; refusing to save it"
     diagnose
     exit 1
   fi
-  xcrun simctl io "$DEVICE" screenshot "$OUT/$scene.png" >/dev/null
   echo "Saved $OUT/$scene.png"
 done
 ls -la "$OUT"
